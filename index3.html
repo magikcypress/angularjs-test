@@ -1,0 +1,47 @@
+<!doctype html>
+<html ng-app>
+  <head>
+    <script src="http://code.angularjs.org/1.0.6/angular.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div ng-controller="UserForm">
+    
+      <form name="myForm">
+      <ul>
+        <li ng-repeat="user in form">
+        <label>Name:</label><br/>
+        <input type="text" ng-model="user.name" required/> <br/><br/>
+    
+        <label>Address:</label> <br/>
+        <input type="text" ng-model="user.address.line1" size="33" required/> <br/>
+        <input type="text" ng-model="user.address.city" size="12" required/>,
+        <input type="text" ng-model="user.address.state" size="2"
+               ng-pattern="state" required/>
+        <input type="text" ng-model="user.address.zip" size="5"
+               ng-pattern="zip" required/><br/><br/>
+    
+        <label>Contacts:</label>
+        [ <a href="" ng-click="addContact()">add</a> ]
+        <div ng-repeat="contact in user.contacts">
+          <select ng-model="contact.type">
+            <option>email</option>
+            <option>phone</option>
+            <option>pager</option>
+            <option>IM</option>
+          </select>
+          <input type="text" ng-model="contact.value" required/>
+           [ <a href="" ng-click="removeContact(contact)">X</a> ]
+        </div>
+        </li>
+      </ul>
+      <button ng-click="cancel()" ng-disabled="isCancelDisabled()">Cancel</button>
+      <button ng-click="save()" ng-disabled="isSaveDisabled()">Save</button>
+    </form>
+    
+    <hr/>
+    Debug View:
+    <pre>form={{form}}</pre>
+    </div>
+  </body>
+</html>

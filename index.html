@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" ng-app>
+ <script src="http://code.angularjs.org/1.1.5/angular.min.js"
+   ng:autobind></script>
+ <script src="angular-cornercouch.js"></script>
+ <body>
+  <div ng:controller="DateCtrl">
+    <form ng:submit="addDate()">
+      <input type="text" name="dateText" size="35"
+             placeholder="enter your date here">
+      <input type="submit" value="add"><br>
+      <span>{{remaining()}} remaining</span>
+      <input type="button" ng:click="removeDone()" value="clean up">
+    </form>
+
+    <ul>
+      <li ng:repeat="date in dates">
+       <input type="checkbox" name="date.done">
+       <span ng:class="'done-' + date.done">{{date.text}}</span>
+      </li>
+    </ul>
+
+
+    <form class='form-inline' name='loginForm' ng-submit="submitLogin()">
+          Name <input type='text' name='user' ng-model='loginUser' required>&nbsp;
+          Password <input type='password' name='pass' ng-model='loginPass' required>&nbsp;
+          <button class='btn' type="submit">Login</button>&nbsp;
+    </form>
+
+    <div class='alert alert-info' ng-show='showInfo'>
+          <button class='btn' ng-click='server.logout()'>Logout</button>
+              <br><br>
+                  <pre>server.userCtx = {{ server.userCtx | json }}</pre>
+                      <pre>server.info = {{ server.info | json }}<pre>
+                      <pre>server.databases = {{ server.databases | json }}</pre>
+                          <pre>server.uuids = {{ server.uuids | json }}</pre>
+                              <pre>server.userDoc = {{ server.userDoc | json }}</pre>
+                                  <pre>gbookdb.info = {{ gbookdb.info | json }}</pre>
+                                </div>
+
+  </div>
+
+  <script>
+
+    angular.element(document).ready(function() {
+      angular.bootstrap(document);
+    });
+
+    function DateCtrl() {
+      var scope = this;
+
+      scope.dates = [{text:'learn angular', done:true},
+                     {text:'build an angular app', done:false}];
+
+      scope.addDate = function() {
+        scope.dates.push({text:scope.dateText, done:false});
+        scope.dateText = '';
+      };
+
+      scope.remaining = function(){
+        return angular.Array.count(scope.dates, function(date){
+          return !date.done;
+        });
+      };
+
+      scope.removeDone = function() {
+        var oldDates = scope.dates;
+        scope.dates = [];
+        angular.forEach(oldDates, function(date) {
+          if (!date.done) scope.dates.push(date);
+        });
+      };
+    }
+
+
+  </script>
+
+  <style>
+    .done-true {text-decoration: line-through; color: gray;}
+  </style>
+ </body>
+</html>

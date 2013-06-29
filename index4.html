@@ -1,0 +1,86 @@
+<!doctype html>
+<html ng-app="app">
+ <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-startup-image" href="startup.png">
+    <link rel="apple-touch-icon" href="img/runn-128x128.png"/>
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="http://code.angularjs.org/1.1.5/angular.js"></script>
+    <script type="text/javascript" src="angular-resource.js"></script>
+    <script type="text/javascript" src="pouchdb-nightly.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="todo.js"></script>
+    <script type="text/javascript">
+        function BlockMove(event) {
+          event.preventDefault();
+        }
+    </script>
+    <style>
+        .done-true {text-decoration: line-through; color: gray;}
+    </style>
+</head>
+<body ontouchmove="BlockMove(event);">
+  <div ng:controller="TodoCtrl">
+
+      <span>{{remaining()}} of {{todos.length}} remaining</span>
+      [ <a href="" ng-click="archive()">archive</a> ]
+
+      <ul class="unstyled">
+        <li ng-repeat="todo in todos">
+          <input type="checkbox" ng-model="todo.done">
+          <span class="done-{{todo.done}}">{{todo.text}}</span>
+         </li>
+       </ul>
+
+       <form ng-submit="addTodo()">
+         <input type="text" ng-model="todoText"  size="30"
+           placeholder="add new todo here">
+         <input class="btn-primary" type="submit" value="add">
+        </form>
+
+  </div>
+  <hr/>
+
+  <div ng-controller="SettingsController">
+
+          <label>Add contact</label>
+          Name: <input type="text" ng-model="username"/>
+
+          [ <a href="" ng-click="addContact()">add</a> ]<br/>
+
+      <ul>
+        <li ng-repeat="name in names">Contact: {{ name.value }}
+          [ <a href="" ng-click="removeContact(name)">X</a> ]<br/>
+          <ul>
+          <li ng-repeat="contact in name.contacts">
+            <select ng-model="contact.type">
+              <option>email</option>
+              <option>phone</option>
+              <option>pager</option>
+              <option>IM</option>
+            </select>
+            <input type="text" ng-model="contact.value"/>
+            <input type="hidden" ng-model="contact.uid"/>
+            [ <a href="" ng-click="clearDataContact(contact)">clear</a>
+            | <a href="" ng-click="removeDataContact(contact)">X</a> ]
+          </li>
+          <li>[ <a href="" ng-click="addDataContact(contact)">add</a> ]</li>
+       </ul>
+        </li>
+      </ul>
+
+
+      Debug View:
+      <pre>user={{names | json}}</pre>
+    </div>
+  <hr/>
+
+
+
+
+
+
+ </body>
+</html>
